@@ -1,0 +1,16 @@
+{
+    "database": {
+        "mode": "mysql_database",
+        "sqlite3": {
+            "file": "",
+            "encryption_key": ""
+        },
+        "mysql_database": {
+            "host": "localhost",
+            "port": "3306",
+            "user": "user",
+            "password": "password",
+            "database": "forum"
+        }
+    }
+}

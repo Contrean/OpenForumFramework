@@ -1,0 +1,12 @@
+database > All database related configurations
+    mode > Choose between 'sqlite3', 'mysql_database' [standard] or 'none'.
+    sqlite3 > Configurations for sqlite3.
+        file > If the path of the file should be relative, its root is /app/sql/.
+        encryptionkey > If a encryptionkey is used for the file, enter it here.
+    mysql_database > Configurations for the connection to a databaseserver.
+        host > The host of the database. Examples: 'localhost' [standard], '1.12.123.234', 'example.domain'.
+        port > The port of the database.
+        user > The user, the connection should use. For security reasons, please don't use any admin/root account and give the account only the permissions needed.
+        password > The password of the databaseuser.
+        database > The database on the databaseserver.
+

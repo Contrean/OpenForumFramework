@@ -6,7 +6,7 @@
     <title>404 - Not Found</title>
 </head>
 <body>
-    <h1>404 - Not Found</h1>
-    <h2>The page you are looking for can't be found.</h2>
+    <h1>404 - <?php echo $LANG->get('error.404'); ?></h1>
+    <h2><?php echo $LANG->get('error.404_MSG'); ?></h2>
 </body>
 </html>

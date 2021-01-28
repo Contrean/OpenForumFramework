@@ -6,7 +6,7 @@
     <title>403 - Forbidden</title>
 </head>
 <body>
-    <h1>403 - Forbidden</h1>
-    <h2>You aren't permitted to see this page.</h2>
+    <h1>403 - <?php echo $LANG->get('error.403'); ?></h1>
+    <h2><?php echo $LANG->get('error.403_MSG'); ?></h2>
 </body>
 </html>

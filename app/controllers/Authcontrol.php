@@ -30,4 +30,18 @@ class Authcontrol {
         file_put_contents(__DIR__."/../../cache/sessions/sessions.json", json_encode($sessions));
         return $sessionToken;
     }
+
+    public static function checkSessionId($sessionId) {
+        $sessions = json_decode(file_get_contents(__DIR__."/../../cache/sessions/sessions.json"), true);
+        
+        $sessions = self::checkForInvalidSessions($sessions);
+        $isValid = false;
+        foreach ($sessions as $session) {
+            if ($sessionId = $session["token"]) {
+                $isValid = true;
+                break;
+            }
+        }
+        return $isValid;
+    }
 }

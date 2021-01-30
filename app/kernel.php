@@ -22,7 +22,7 @@ function strEndsWith($haystack, $needle) {
  * Throw an internal server error, that happened because a error couldn't be displayed, thanks to an error
  */
 function error_500($code, $text, $file, $line) {
-    echo "<h1>500 - Internal Server Error</h1><h2>Tried to throw error but page couldn't be found or produced error.</h2><h3>$text</h3>";
+    echo "<h1>500 - Internal Server Error</h1><h2>Tried to throw error but errorpage couldn't be found or produced error.</h2><h3>$text</h3>";
     exit();
 }
 
@@ -41,6 +41,7 @@ function abort($code = 404) {
  */
 function view($file) {
     global $LANG;
+    global $Request;
     $dir = __DIR__."/../view/";
     $files = scandir($dir);
     if (in_array($file, $files)) {
@@ -54,6 +55,7 @@ function view($file) {
  * Execute a controllerfunction
  */
 function process($function) {
+    global $Request;
     global $LANG;
     $dir = __DIR__."/../app/controllers/";
     $files = scandir($dir);
@@ -63,14 +65,14 @@ function process($function) {
     $classExists = false;
     foreach ($files as $file) {
         if (strEndsWith($file, ".php")) {
-            require __DIR__."/$file";
+            require __DIR__."/controllers/$file";
             
             if (class_exists($classname)) {
                 $classExists = true;
                 try {
-                    eval($function);
+                    call_user_func($function, $Request);
                 } catch (\Throwable $th) {
-                    echo "Trouble finding function $function in /app/controllers/. Either there is a classnameconflict or the called class doesn't have this function";
+                    echo "Trouble finding function $function in /app/controllers/$file. Either there is a classnameconflict or the called class doesn't have this function";
                 }
             }
         }
@@ -83,9 +85,12 @@ function process($function) {
 
 class Route {
     private $route, $method;
-    public function __construct($ROUTE, $METHOD) {
+    public $request;
+
+    function __construct($ROUTE, $METHOD, $REQUEST) {
         $this->uri = $ROUTE;
         $this->method = $METHOD;
+        $this->request = $REQUEST;
     }
 
     public function get($route, $executeable) {
@@ -95,6 +100,9 @@ class Route {
             if ($route == '/') {
                 $targetRoute == [""];
             }
+
+            $parameters = [];
+
             if (count($realRoute) != count($targetRoute)) {
                 return false;
             } else {
@@ -103,13 +111,14 @@ class Route {
                     $targetElement = $targetRoute[$i];
 
                     if (strStartsWith($targetElement, "[") && strEndsWith($targetElement, "]")) {
-                        $_GET[str_replace("[", "", str_replace("]", "", $targetElement))] = $realElement;
+                        $parameters[str_replace("[", "", str_replace("]", "", $targetElement))] = $realElement;
                     } else {
                         if ($realElement != $targetElement) {
                             return false;
                         }
                     }
                 }
+                $this->request->add($parameters);
                 $executeable();
                 exit();
             }
@@ -125,6 +134,8 @@ class Route {
                 $targetRoute == [""];
             }
 
+            $parameters = [];
+
             if (count($realRoute) != count($targetRoute)) {
                 return false;
             } else {
@@ -133,13 +144,14 @@ class Route {
                     $targetElement = $targetRoute[$i];
 
                     if (strStartsWith($targetElement, "[") && strEndsWith($targetElement, "]")) {
-                        $_POST[str_replace("[", "", str_replace("]", "", $targetElement))] = $realElement;
+                        $parameters[str_replace("[", "", str_replace("]", "", $targetElement))] = $realElement;
                     } else {
                         if ($realElement != $targetElement) {
                             return false;
                         }
                     }
                 }
+                $this->request->add($parameters);
                 $executeable();
                 exit();
             }

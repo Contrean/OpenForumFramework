@@ -1,10 +1,13 @@
 <?php
+$args = $_SERVER["argv"];
+if (count($args) <= 1) {
+    exit();
+}
+
 function strStartsWith($haystack, $needle) {
     $length = strlen($needle);
     return substr($haystack, 0, $length) === $needle;
 }
-
-$args = $_SERVER["argv"];
 
 $port = "8000";
 $host = "localhost";
@@ -49,8 +52,9 @@ if ($args[1] == "server") {
 $modelstring
 
 class $controllername {
-    public static function classfunction(\$parameter) {
-        return \$parameter;
+    public static function classfunction(\$Request) {
+        \$result = \"Hello World\";
+        echo \$result;
     }
 }
 ";

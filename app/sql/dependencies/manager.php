@@ -32,7 +32,7 @@ class SQLManager {
     public function fetch_all($sqlResult) {
         if ($this->mode == 'mysql_database') {
             return $sqlResult->fetch_all();
-        } else if ($this->mode == 'sqlite3') {
+        } elseif ($this->mode == 'sqlite3') {
             return $sqlResult->fetchArray();
         }
         
@@ -41,7 +41,7 @@ class SQLManager {
     public function fetch_array($sqlResult) {
         if ($this->mode == 'mysql_database') {
             return $sqlResult->fetch_array();
-        } else if ($this->mode == 'sqlite3') {
+        } elseif ($this->mode == 'sqlite3') {
             return $sqlResult->fetchArray();
         }
     }
@@ -49,7 +49,7 @@ class SQLManager {
     public function fetch_assoc($sqlResult) {
         if ($this->mode == 'mysql_database') {
             return $sqlResult->fetch_assoc();
-        } else if ($this->mode == 'sqlite3') {
+        } elseif ($this->mode == 'sqlite3') {
             return $sqlResult->fetchArray();
         }
     }

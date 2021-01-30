@@ -21,16 +21,19 @@ if ($args[1] == "server") {
         if (strStartsWith($arg, "--port")) {
             $port = explode("=", $arg)[1];
         }
-        else if (strStartsWith($arg, "--host")) {
+        elseif (strStartsWith($arg, "--host")) {
             $host = explode("=", $arg)[1];
         }
     }
-} else if ($args[1] == "make") {
+} elseif ($args[1] == "make") {
     $make = true;
     switch ($args[2]) {
         case 'controller':
             $controllername = $args[3];
             $models = [];
+
+            $route = "";
+            $routeType = "get";
 
             foreach ($args as $arg) {
                 if (strStartsWith($arg, "--require")) {
@@ -41,7 +44,20 @@ if ($args[1] == "server") {
                     } else {
                         array_push($models, "require __DIR__.\"/../sql/models/$model.php\";");
                     }
+                } elseif (strStartsWith($arg, "--addRoute")) {
+                    $route = explode("=", $arg)[1];
+                } elseif (strStartsWith($arg, "--routeType")) {
+                    $tempRouteType = strtolower(explode("=", $arg[1]));
+                    if ($tempRouteType == "get" || $tempRouteType == "post") {
+                        $routeType = $tempRouteType;
+                    }
                 }
+            }
+
+            if ($route != "") {
+                $routes = file_get_contents(__DIR__."/route/controllers.php");
+                $routes .= "\n\$ROUTE->$routeType(\"$route\", function () {process(\"$controllername::classfunction\");});";
+                file_put_contents(__DIR__."/route/controllers.php", $routes);
             }
 
             $modelstring = implode("\n", $models);

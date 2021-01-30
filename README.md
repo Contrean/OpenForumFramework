@@ -88,4 +88,6 @@ To create a controller, simply use the dev.php-file again.
 
 You can also add the `--require=` to import models into your controller. You can import as many models as you want, as long as you use existing models.
 
+By using `--addRoute=` you can also generate a route. To specify get or post, use `--routeType=`. Standard is get.
+
 Inside the controller you can add static function that process requests and use database models.

@@ -39,7 +39,7 @@ For a post-Route simply change the get to a post.
 For routes reffering to controllers enter the routes in the */route/controller.php* file and change the view()-function to process().
 Using the process-function you can simply enter a classname and a function like this:
 
-`process('classname::function()')`
+`process('classname::function')`
 
 Only static functions can be called via process().
 
@@ -48,7 +48,7 @@ Only static functions can be called via process().
 To add parameters to your route, write the routes like this:
 
 `/aRouteWith/[Parameter1]/And/[Parameter2]`.
-Now to use these parameters, you can simply use `$_GET` and `$_POST`.
+Now to use these parameters, you can use `$Request->parametername`
 
 **Example**
 
@@ -57,8 +57,8 @@ Now to use these parameters, you can simply use `$_GET` and `$_POST`.
 Inside the Postscontroller:
 
 `
-public static function get() {
-    $postId = $_GET["PostId"];
+public static function get($Request) {
+    $postId = $Request->PostId;
 }
 `
 

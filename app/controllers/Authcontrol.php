@@ -32,16 +32,22 @@ class Authcontrol {
     }
 
     public static function checkSessionId($sessionId) {
+        if ($sessionId == 0 || strlen($sessionId) < 128) {return false;}
         $sessions = json_decode(file_get_contents(__DIR__."/../../cache/sessions/sessions.json"), true);
         
         $sessions = self::checkForInvalidSessions($sessions);
-        $isValid = false;
         foreach ($sessions as $session) {
-            if ($sessionId = $session["token"]) {
-                $isValid = true;
-                break;
+            if ($sessionId == $session["token"]) {                
+                return true;
             }
         }
-        return $isValid;
+        return false;
+    }
+
+    public static function createNewSessionIfInvalid($sessionId) {
+        if (!self::checkSessionId($sessionId)) {
+            return self::createSession();
+        }
+        return $sessionId;
     }
 }

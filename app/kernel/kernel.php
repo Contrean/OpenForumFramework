@@ -32,7 +32,7 @@ function error_500($code, $text, $file, $line) {
 function abort($code = 404) {
     global $LANG;
     set_error_handler("error_500");
-    include(__DIR__."/errorpages/$code.php");
+    include(__DIR__."/../errorpages/$code.php");
     exit();
 }
 
@@ -42,7 +42,7 @@ function abort($code = 404) {
 function view($file) {
     global $LANG;
     global $Request;
-    $dir = __DIR__."/../view/";
+    $dir = __DIR__."/../../view/";
     $files = scandir($dir);
     if (in_array($file, $files)) {
         require("$dir$file");
@@ -57,7 +57,7 @@ function view($file) {
 function process($function) {
     global $Request;
     global $LANG;
-    $dir = __DIR__."/../app/controllers/";
+    $dir = __DIR__."/../controllers/";
     $files = scandir($dir);
 
     $classname = explode("::", $function)[0];
@@ -65,7 +65,7 @@ function process($function) {
     $classExists = false;
     foreach ($files as $file) {
         if (strEndsWith($file, ".php")) {
-            require __DIR__."/controllers/$file";
+            require __DIR__."/../controllers/$file";
             
             if (class_exists($classname)) {
                 $classExists = true;

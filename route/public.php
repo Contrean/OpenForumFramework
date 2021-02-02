@@ -2,4 +2,4 @@
 /**
  * For public requests
  */
-$ROUTE->get('/', function () {view('index.php');});
+$ROUTE->get('/', function () {view('index.html');});

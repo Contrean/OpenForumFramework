@@ -6,16 +6,20 @@ if (in_array(str_replace("/", "", $_SERVER['REQUEST_URI']), $files)) {
     exit();
 }
 
+//Create Cookie Instance
+require __DIR__."/../app/kernel/cookie.php";
+$Cookies = new Cookies();
+
 //Include languagemanagement
-include __DIR__."/../app/language.php";
+include __DIR__."/../app/kernel/language.php";
 $LANG = new Language();
 
 //Create request
-require __DIR__."/../app/request.php";
+require __DIR__."/../app/kernel/request.php";
 $Request = new Request([]);
 
 //Create a route instance
-require __DIR__."/../app/kernel.php";
+require __DIR__."/../app/kernel/kernel.php";
 $ROUTE = new Route($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD'], $Request);
 
 //Test if the route is a valid route

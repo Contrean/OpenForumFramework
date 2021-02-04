@@ -16,5 +16,4 @@ mails > All email related configurations
     password > the password for SMTP Authentication
     SMTPEncryption > can be 'tls' [standard] or 'ssl'
     port > the port used by the smtp service
-    sender > the email for the user in emails (Often equal to username)
     displayname > the displayname for the user in emails

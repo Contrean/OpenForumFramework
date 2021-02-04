@@ -6,10 +6,17 @@ require __DIR__."/phpmailer/phpmailer/src/Exception.php";
 require __DIR__."/phpmailer/phpmailer/src/PHPMailer.php";
 require __DIR__."/phpmailer/phpmailer/src/SMTP.php";
 
+require __DIR__."/../controllers/VerificationController.php";
+require_once __DIR__."/../kernel/language.php";
+
 class MailHandler {
-    public static function sendVerification($receiver) {
+
+    public static function sendVerification($receiver, $userId) {
         $CONF = json_decode(file_get_contents(__DIR__."/../../config.json"), true)["mails"];
-        $body = file_get_contents(__DIR__."/../mail/mails/verify.html");
+        $LANG = new Language();
+        
+        $link = VerificationController::createVerificationlink($userId);
+        $body = str_replace("%LINK%", $link, file_get_contents(__DIR__."/../mail/mails/verify.html"));
 
         $mail = new PHPMailer();
         $mail->isSMTP();
@@ -20,10 +27,10 @@ class MailHandler {
         $mail->Password = $CONF["password"];
         $mail->SMTPSecure = $CONF["SMTPEncryption"];
 
-        $mail->setFrom($CONF["sender"], $CONF["displayname"]);
+        $mail->setFrom($CONF["username"], $CONF["displayname"]);
         $mail->addAddress($receiver);
 
-        $mail->Subject = "Subject" /*$LANG->get('mail.verifiy_subject')*/;;
+        $mail->Subject = $LANG->get('mail.verify_subject');
         $mail->msgHTML($body);
         $mail->AltBody = strip_tags($body);
         

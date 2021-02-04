@@ -65,7 +65,7 @@ function process($function) {
     $classExists = false;
     foreach ($files as $file) {
         if (strEndsWith($file, ".php")) {
-            require __DIR__."/../controllers/$file";
+            require_once __DIR__."/../controllers/$file";
             
             if (class_exists($classname)) {
                 $classExists = true;
@@ -74,6 +74,7 @@ function process($function) {
                 } catch (\Throwable $th) {
                     echo "Trouble finding function $function in /app/controllers/$file. Either there is a classnameconflict or the called class doesn't have this function";
                 }
+                exit();
             }
         }
     }

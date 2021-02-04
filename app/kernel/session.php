@@ -1,5 +1,5 @@
 <?php
-require __DIR__."/../controllers/Authcontrol.php";
+require_once __DIR__."/../controllers/Authcontrol.php";
 
 class Session {
     public $sessionId;

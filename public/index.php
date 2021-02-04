@@ -1,4 +1,8 @@
 <?php
+//Create Session
+require __DIR__."/../app/kernel/session.php";
+$Session = (isset($Cookies->sId)) ? new Session($Cookies->sId) : new Session(0);
+
 //Scan the route for files in the public directory
 $files = scandir(__DIR__);
 if (in_array(str_replace("/", "", $_SERVER['REQUEST_URI']), $files)) {
@@ -18,10 +22,6 @@ $Cookies = new Cookies($_COOKIE);
 //Include languagemanagement
 include __DIR__."/../app/kernel/language.php";
 $LANG = new Language();
-
-//Create Session
-require __DIR__."/../app/kernel/session.php";
-$Session = (isset($Cookies->sId)) ? new Session($Cookies->sId) : new Session(0);
 
 //Create request
 require __DIR__."/../app/kernel/request.php";

@@ -12,5 +12,14 @@
             "password": "password",
             "database": "forum"
         }
+    },
+    "mails": {
+        "SMTPserver": "smtp.example.com",
+        "username": "user@example.com",
+        "password": "secret",
+        "SMTPEncryption": "tls",
+        "port": 587,
+        "sender": "user@example.com",
+        "displayname": "example"
     }
 }

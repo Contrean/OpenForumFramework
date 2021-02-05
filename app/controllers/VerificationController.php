@@ -17,7 +17,7 @@ class VerificationController {
     }
 
     public static function createVerificationlink($userId) {
-        $links = json_decode(file_get_contents(__DIR__."/../../cache/sessions/verificationlinks.json"), true);        
+        $links = json_decode(file_get_contents(__DIR__."/../../cache/sessions/verificationlinks.json"), true);
         $links = self::checkForInvalidLinks($links);
 
         $link = hash("crc32", strval(count($links)).strval(microtime(false)));
@@ -31,8 +31,24 @@ class VerificationController {
         return $link;
     }
 
-    public static function isValidVLink($vLink) {
-        $links = json_decode(file_get_contents(__DIR__."/../../cache/sessions/verificationlinks.json"), true);
+    public static function createResetlink($userId) {
+        $links = json_decode(file_get_contents(__DIR__."/../../cache/sessions/resetlinks.json"), true);
+        $links = self::checkForInvalidLinks($links);
+
+        $link = hash("crc32", strval(count($links)).strval(microtime(false) / M_PI));
+        $link = hash("md5", $link);
+
+        $d = new DateTime();
+
+        array_push($links, ["link" => $link, "timestamp" => $d->getTimestamp(), "userId" => $userId]);
+
+        file_put_contents(__DIR__."/../../cache/sessions/resetlinks.json", json_encode($links));
+        return $link;
+    }
+
+    public static function isValidVLink($vLink, $mode = "v") {
+        $file = ($mode == "v") ? __DIR__."/../../cache/sessions/verificationlinks.json" : __DIR__."/../../cache/sessions/resetlinks.json";
+        $links = json_decode(file_get_contents($file), true);
         $links = self::checkForInvalidLinks($links);
 
         foreach ($links as $link) {
@@ -43,14 +59,15 @@ class VerificationController {
         return false;
     }
 
-    public static function getUserByLink($vLink) {
-        $links = json_decode(file_get_contents(__DIR__."/../../cache/sessions/verificationlinks.json"), true);
+    public static function getUserByLink($vLink, $mode = "v") {
+        $file = ($mode == "v") ? __DIR__."/../../cache/sessions/verificationlinks.json" : __DIR__."/../../cache/sessions/resetlinks.json";
+        $links = json_decode(file_get_contents($file), true);
         foreach ($links as $link) {
             if ($link["link"] == $vLink) {
                 $key = array_search($link, $links);
                 unset($links[$key]);
 
-                file_put_contents(__DIR__."/../../cache/sessions/verificationlinks.json", json_encode($links));
+                file_put_contents($file, json_encode($links));
                 return $link["userId"];
             }
         }
@@ -65,6 +82,18 @@ class VerificationController {
         }
 
         $userId = self::getUserByLink($vLink);
+        echo $userId;
+
+    }
+
+    public static function resetPassword($Request) {
+        $vLink = $Request->vLink;
+
+        if (!self::isValidVLink($vLink, "r")) {
+            abort();
+        }
+
+        $userId = self::getUserByLink($vLink, "r");
         echo $userId;
 
     }

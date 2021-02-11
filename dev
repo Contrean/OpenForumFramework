@@ -42,7 +42,7 @@ if ($args[1] == "server") {
                         echo "\033[31mERROR: Model '$model' does not exist.\033[0m\n";
                         exit();
                     } else {
-                        array_push($models, "require __DIR__.\"/../sql/models/$model.php\";");
+                        array_push($models, "require_once __DIR__.\"/../sql/models/$model.php\";");
                     }
                 } elseif (strStartsWith($arg, "--addRoute")) {
                     $route = explode("=", $arg)[1];
@@ -87,7 +87,7 @@ class $controllername {
             $model = fopen(__DIR__."/app/sql/models/$modelname.php", "w");
 
             $php = "<?php
-    require __DIR__.\"/../dependencies/model.php\";
+    require_once __DIR__.\"/../dependencies/model.php\";
 
     class $classname extends Model {
         private \$tablename = \"$modelname\";

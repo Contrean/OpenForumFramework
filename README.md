@@ -7,17 +7,17 @@ To use the Framework you need PHP Version7 or later installed.
 
 ### Starting the developmentserver
 
-To start the developmentserver execute the dev.php script in the main directory using php.
+To start the developmentserver execute the dev script in the main directory using php.
 
 For this write into the terminal:
 
-`php dev.php server`
+`php dev server`
 
 If you want to specify the ip / port use the flags `--host=`/`--port=`
 
 **Examples**
-`php dev.php server --port=80`
-`php dev.php server --host=0.0.0.0 --port=1234`
+`php dev server --port=80`
+`php dev server --host=0.0.0.0 --port=1234`
 
 ### **Important**
 Don't use the developmentserver for production!
@@ -70,9 +70,9 @@ You can choose between a mysql-databaseserver and an sqlite3-file.
 ### Models
 A Model is an instance of a Databasetable.
 
-To create a model you can use the dev.php-file.
+To create a model you can use the dev-file.
 
-`php dev.php make model YOUR_MODELNAME_HERE`
+`php dev make model YOUR_MODELNAME_HERE`
 
 After creating the model, enter the file named like the model created in `/app/sql/models/`.
 In row 5 edit the value of the variable `$tablename` to the tablename of the table represented by the model.
@@ -82,9 +82,9 @@ And that's how you create a model.
 If you want to use a model, you need a controller.
 
 ### Controllers
-To create a controller, simply use the dev.php-file again.
+To create a controller, simply use the dev-file again.
 
-`php dev.php make controller YOUR_CONTROLLERNAME_HERE`
+`php dev make controller YOUR_CONTROLLERNAME_HERE`
 
 You can also add the `--require=` to import models into your controller. You can import as many models as you want, as long as you use existing models.
 

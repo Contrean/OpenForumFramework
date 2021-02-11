@@ -2,7 +2,7 @@
 class SQLManager {
     private $config, $mode, $connection;
     public function __construct() {
-        $this->config = json_decode(file_get_contents(__DIR__."/../../config.json"), true)['database'];
+        $this->config = json_decode(file_get_contents(__DIR__."/../../../config.json"), true)['database'];
         $this->mode = $this->config['mode'];
         if (!($this->mode == 'mysql_database' || $this->mode == 'none' || $this->mode == 'sqlite3')) {
             echo "<h1>503 - Service Unavailable</h1><h2>Can't reach the database due to configurationerror: $this->mode</h2>";

@@ -2,11 +2,11 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require __DIR__."/phpmailer/phpmailer/src/Exception.php";
-require __DIR__."/phpmailer/phpmailer/src/PHPMailer.php";
-require __DIR__."/phpmailer/phpmailer/src/SMTP.php";
+require_once __DIR__."/phpmailer/phpmailer/src/Exception.php";
+require_once __DIR__."/phpmailer/phpmailer/src/PHPMailer.php";
+require_once __DIR__."/phpmailer/phpmailer/src/SMTP.php";
 
-require __DIR__."/../controllers/VerificationController.php";
+require_once __DIR__."/../controllers/VerificationController.php";
 require_once __DIR__."/../kernel/language.php";
 
 class MailHandler {
@@ -36,8 +36,6 @@ class MailHandler {
         
         if (!$mail->send()) {
             echo $mail->ErrorInfo;
-        } else {
-            echo "Success";
         }
     }
 

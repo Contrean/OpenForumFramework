@@ -1,5 +1,5 @@
 <?php
-require __DIR__."/manager.php";
+require_once __DIR__."/manager.php";
 
 class Model {
     private $SQLM;
@@ -275,5 +275,15 @@ class Model {
             "columns" => $columns,
             "values" => $values
         ];
+    }
+
+    /**
+     * Test if a record exists in a database
+     */
+    public function isRecord($key, $value) {
+        if (gettype($value) == "string") {
+            $value = "'$value'";
+        }
+        return mysqli_num_rows($this->SQLM->query("SELECT 1 FROM $this->tablename WHERE $key=$value;")) == 1;
     }
 }

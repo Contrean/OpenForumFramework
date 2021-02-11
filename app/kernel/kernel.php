@@ -153,6 +153,7 @@ class Route {
                     }
                 }
                 $this->request->add($parameters);
+                $this->request->add($_POST);
                 $executeable();
                 exit();
             }

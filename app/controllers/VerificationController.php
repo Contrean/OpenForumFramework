@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__."/../sql/models/User.php";
+
 class VerificationController {
     private static function checkForInvalidLinks($links) {
         $d = new DateTime();
@@ -82,8 +84,11 @@ class VerificationController {
         }
 
         $userId = self::getUserByLink($vLink);
-        echo $userId;
 
+        $User = new User();
+        $User->update(["isVerified"], [1]);
+        $User->where("userId", "=", $userId);
+        $User->execute();
     }
 
     public static function resetPassword($Request) {
@@ -94,7 +99,7 @@ class VerificationController {
         }
 
         $userId = self::getUserByLink($vLink, "r");
-        echo $userId;
-
+        
+        view("templates/resetPassword.php");
     }
 }

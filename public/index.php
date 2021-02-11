@@ -8,12 +8,22 @@ require_once __DIR__."/../app/kernel/session.php";
 $Session = (isset($Cookies->sId)) ? new Session($Cookies->sId) : new Session(0);
 
 //Scan the route for files in the public directory
-$files = scandir(__DIR__);
-if (in_array(str_replace("/", "", $_SERVER['REQUEST_URI']), $files) && !$_SERVER['REQUEST_URI'] == '/index.php') {
+$_SERVER['REQUEST_URI'] = ($_SERVER['REQUEST_URI'] == '/index.php') ? '/' : $_SERVER['REQUEST_URI'];
+if (is_file(__DIR__.$_SERVER['REQUEST_URI'])) {
+    $ext = pathinfo($_SERVER['REQUEST_URI'])['extension'];
+    switch ($ext) {
+        case 'css':
+            /*For some reason css won't be recognized as css but as plain... */
+            header('Content-Type: text/css');
+            break;
+        
+        default:
+            header('Content-Type: '.mime_content_type(__DIR__.$_SERVER['REQUEST_URI']));
+            break;
+    }
     echo file_get_contents(__DIR__.$_SERVER['REQUEST_URI']);
     exit();
 }
-$_SERVER['REQUEST_URI'] = ($_SERVER['REQUEST_URI'] == '/index.php') ? '/' : $_SERVER['REQUEST_URI'];
 
 //Test wether the sessions-file is a json-file (To prevent errors)
 if (gettype(json_decode(file_get_contents(__DIR__."/../cache/sessions/sessions.json"))) != "string") {

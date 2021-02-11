@@ -1,6 +1,6 @@
 <?php
 class Authcontrol {
-    private $file = __DIR__."/../../cache/sessions/sessions.json";
+    private const file = __DIR__."/../../cache/sessions/sessions.json";
 
     private static function checkForInvalidSessions($sessions) {
         $d = new DateTime();
@@ -19,7 +19,7 @@ class Authcontrol {
     }
 
     public static function createSession() {
-        $sessions = json_decode(file_get_contents(self::$file), true);
+        $sessions = json_decode(file_get_contents(self::file), true);
         
         $sessions = self::checkForInvalidSessions($sessions);
 
@@ -29,13 +29,13 @@ class Authcontrol {
         $d = new DateTime();
         array_push($sessions, ["token" => $sessionToken, "timestamp" => $d->getTimestamp(), "rp" => "false", "ui" => 0]);
 
-        file_put_contents(self::$file, json_encode($sessions));
+        file_put_contents(self::file, json_encode($sessions));
         return $sessionToken;
     }
 
     public static function checkSessionId($sessionId) {
         if ($sessionId == 0 || strlen($sessionId) < 128) {return false;}
-        $sessions = json_decode(file_get_contents(self::$file), true);
+        $sessions = json_decode(file_get_contents(self::file), true);
         
         $sessions = self::checkForInvalidSessions($sessions);
         foreach ($sessions as $session) {
@@ -54,7 +54,7 @@ class Authcontrol {
     }
 
     public static function isRPSession($sessionId) {
-        $sessions = json_decode(file_get_contents(self::$file), true);
+        $sessions = json_decode(file_get_contents(self::file), true);
 
         foreach($sessions as $session) {
             if ($session["token"] == $sessionId && $session["rp"] == "true") {
@@ -66,7 +66,7 @@ class Authcontrol {
     }
 
     public static function makeSessionRP($sessionId) {
-        $sessions = json_decode(file_get_contents(self::$file), true);
+        $sessions = json_decode(file_get_contents(self::file), true);
 
         foreach($sessions as $session) {
             if ($session["token"] == $sessionId) {
@@ -74,11 +74,11 @@ class Authcontrol {
             }
         }
 
-        file_put_contents(self::$file, json_encode($sessions));
+        file_put_contents(self::file, json_encode($sessions));
     }
 
     public static function deleteSession($sessionId) {
-        $sessions = json_decode(file_get_contents(self::$file), true);
+        $sessions = json_decode(file_get_contents(self::file), true);
 
         foreach($sessions as $session) {
             if ($session["token"] == $sessionId) {
@@ -87,11 +87,11 @@ class Authcontrol {
             }
         }
 
-        file_put_contents(self::$file, json_encode($sessions));
+        file_put_contents(self::file, json_encode($sessions));
     }
 
     public static function getUIBySID($sId) {
-        $sessions = json_decode(file_get_contents(self::$file), true);
+        $sessions = json_decode(file_get_contents(self::file), true);
         if (self::checkSessionId($sId)) {
             foreach ($sessions as $session) {
                 if ($session["token"] == $sId) {
